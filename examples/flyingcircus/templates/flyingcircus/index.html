@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+{% block head %}
+    <head>
+        {% block meta %}
+            <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+            <meta http-equiv="content-language" content="en-us" />
+            <meta http-equiv="imagetoolbar" content="false" />
+            <meta name="robots" content="{% block meta_robots %}index,follow{% endblock %}" />
+            <meta name="description" content="{% block meta.description %}{% endblock meta.description %}" />
+            <meta name="keywords" content="{% block meta.keywords %}{% endblock meta.keywords %}" />
+            <meta name="MSSmartTagsPreventParsing" content="true" />
+        {% endblock meta %}
+    </head>
+{% endblock head %}
+
+<body>
+    <h1>Settings:</h1>
+    <div>
+        <ul>
+            <li>Database Type: {{ settings.DATABASE_ENGINE }}</li>
+            <li>Database Name/ Path: {{ settings.DATABASE_NAME }}</li>
+            <li>Admin: {{ settings.ADMINS.0.0 }}</li>
+        </ul>
+    </div>
+</body>
+</html>

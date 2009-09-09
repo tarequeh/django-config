@@ -1,0 +1,1 @@
+from djangoconfig.deployment import bootstrap, setup_environment
