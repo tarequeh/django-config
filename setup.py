@@ -6,7 +6,7 @@ version = '0.1.0'
 setup(
     name='django-config',
     version=version,
-    description='An architecture for maintaining multiple configuration with Django',
+    description='An architecture for maintaining multiple settings files in Django',
     author='Tareque Hossain',
     author_email='tareque@codexm.com',
     url='http://github.com/tarequeh/django-config/',
