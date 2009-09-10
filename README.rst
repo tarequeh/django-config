@@ -1,4 +1,4 @@
-gi###################
+###################
  Django-Config
 ###################
 An architecture for maintaining multiple configuration with Django
