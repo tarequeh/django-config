@@ -52,8 +52,8 @@ def get_config_identifiers(path):
         sys.stderr.write("Your django application does not appear to have been setup with switchable configurations.\n")
         sys.exit(0)
 
-    files = files[0][2]
-    identifiers = map(lambda name: name.split('.', 1)[0], filter(lambda name: name.endswith(".py") and name not in ('__init__.py', 'base.py',), files))
+    files = files[0][2] + files[0][1]
+    identifiers = map(lambda name: name.split('.', 1)[0], filter(lambda name: ('.' not in name or name.endswith(".py")) and name not in ('__init__.py', 'base.py',), files))
     return [ (i + 1, x) for i, x in enumerate(identifiers) ]
 
 def setup_environment(path):
