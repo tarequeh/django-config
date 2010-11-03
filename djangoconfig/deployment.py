@@ -1,3 +1,4 @@
+import imp
 import os
 import sys
 import md5
@@ -9,16 +10,10 @@ def bootstrap_script(path, project_path_components):
 
 def bootstrap(path):
     path = find_settings_path(path)
-    parent_path = os.path.abspath(os.path.join(path, '..'))
-
-    # Include path to settings.py directory
-    os.sys.path.append(path)
-    # Include path to django project directory
-    os.sys.path.append(parent_path)
 
     from django.core import management
     try:
-        import settings # Assumed to be in the os path
+        settings = imp.load_source('settings', os.path.join(path, 'settings.py'))
     except ImportError:
         sys.stderr.write("Error: Can't find the file 'settings.py' in the directory containing %r. It appears you've customized things.\nYou'll have to run django-admin.py, passing it your settings module.\n(If the file settings.py does indeed exist, it's causing an ImportError somehow.)\n" % __file__)
         sys.exit(1)
@@ -71,11 +66,11 @@ def setup_environment(path):
 
     CONFIG_IDENTIFIER_ID = IDENTIFIERS_REVERSE_LOOKUP.get(CONFIG_IDENTIFIER, '')
     CONFIG_IDENTIFIER_INTERACTIVE = os.environ.get('CONFIG_IDENTIFIER_INTERACTIVE', 'True')
-    
+
     if CONFIG_IDENTIFIER and CONFIG_IDENTIFIER_INTERACTIVE == 'False':
         print "WARNING: Forced to run environment with %s configuration." % CONFIG_IDENTIFIER.upper()
         return bootstrap(path)
-    
+
     while True:
         print "Please select your config identifier."
         for id, name in IDENTIFIERS:
@@ -97,24 +92,19 @@ def setup_environment(path):
             # If the database_host is not empty (not a local database) then we need to confirm that the user REALLY wants
             # to run the command on a potentially production database.
             settings_path = find_settings_path(path)
-            parent_settings_path = os.path.abspath(os.path.join(settings_path, '..'))
 
-            # Temporarily add the project path to the python path so that we can import the settings file.
-            sys.path.append(settings_path)
-            sys.path.append(parent_settings_path)
 
             # Set the config identifier to the selected one, so that the correct configuration gets loaded up.
             os.environ['CONFIG_IDENTIFIER'] = identifier
             os.putenv('CONFIG_IDENTIFIER', identifier)
 
             # Import the settings file into local scope.
-            import settings
+            settings = imp.load_source('settings', os.path.join(settings_path, 'settings.py'))
 
             # Reset the config identifier and system path to what they were before.
             os.putenv('CONFIG_IDENTIFIER', CONFIG_IDENTIFIER)
             os.environ['CONFIG_IDENTIFIER'] = CONFIG_IDENTIFIER
-            sys.path = sys.path[:-2]
-            
+
             # If the database host for the selected configuration is not empty (not a local database). Prompt for password.
             if getattr(settings, 'ENABLE_PASSWORD', False) and getattr(settings, 'PASSWORD_DIGEST', ''):
                 try:
@@ -127,7 +117,7 @@ def setup_environment(path):
                     if md5.md5(password).hexdigest() != settings.PASSWORD_DIGEST:
                         print 'Invalid password.'
                         continue
-            
+
 
             CONFIG_IDENTIFIER = identifier
             break
