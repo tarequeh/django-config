@@ -1,7 +1,7 @@
 import imp
 import os
 import sys
-import md5
+import hashlib
 import getpass
 
 def bootstrap_script(path, project_path_components):
@@ -114,7 +114,7 @@ def setup_environment(path):
                     print ''
                     sys.exit(0)
                 else:
-                    if md5.md5(password).hexdigest() != settings.PASSWORD_DIGEST:
+                    if hashlib.md5(password).hexdigest() != settings.PASSWORD_DIGEST:
                         print 'Invalid password.'
                         continue
 

@@ -3,7 +3,6 @@ Django-config settings loader.
 """
 
 import os
-import socket
 
 CONFIG_IDENTIFIER = os.getenv("CONFIG_IDENTIFIER")
 

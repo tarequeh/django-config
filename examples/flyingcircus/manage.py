@@ -2,10 +2,6 @@
 import sys
 import os
 
-# Add the "src" directory of this project to the python path.
-os.sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-os.sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
-
 from djangoconfig import setup_environment
 
 try:
